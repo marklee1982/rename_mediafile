@@ -4,6 +4,7 @@ import exifread
 import fnmatch
 import time
 
+#用于标识已经处理过的文件，可随意修改
 salt='xxxxxx'
 
 
@@ -39,7 +40,7 @@ def renname_jpg_file(filename):
         mm = 'none'
 
     #filename=org+salt+mm+cc.jpg
-    newname = basename+salt+mm+cc+extname
+    newname = basename  + "_" + salt + "_" + mm+cc+extname
     print(filename ," to ", newname)
     os.rename(filename, newname)
 
@@ -54,7 +55,7 @@ def rename_video_file(filename):
     #create time
     #filename=org+salt+mm+cc.jpg
 
-    newname= basename + salt + createtime + extname
+    newname= basename + "_" + salt + "_" + createtime + extname
     print(filename +" to "+ newname)  
     os.rename(filename, newname)
 
