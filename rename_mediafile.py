@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 import exifread
@@ -40,7 +41,7 @@ def renname_jpg_file(filename):
         mm = 'none'
 
     #filename=org+salt+mm+cc.jpg
-    newname = basename  + "_" + salt + "_" + mm+cc+extname
+    newname = basename  + "_" + salt + "_" + mm + "_" + cc + extname
     print(filename ," to ", newname)
     os.rename(filename, newname)
 
