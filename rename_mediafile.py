@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
 import sys
@@ -26,7 +27,13 @@ def renname_jpg_file(filename):
         cc = cc.replace(' ', '_')
         cc = cc.replace(':', '_')
     except:
-        cc = 'none'
+        try:
+            ctime = tags['Image DateTime']
+            cc = str(ctime)
+            cc = cc.replace(' ', '_')
+            cc = cc.replace(':', '_')
+        except:
+            cc = 'none'
 
     
     #model name
@@ -83,7 +90,7 @@ def main():
 
                 #print( filename+" is a jpg file.")
             else:
-                if fnmatch.fnmatch(filename.lower(), '*.mov') or fnmatch.fnmatch(filename.lower(), '*.mp4') :
+                if fnmatch.fnmatch(filename.lower(), '*.mov') or fnmatch.fnmatch(filename.lower(), '*.mp4')  or fnmatch.fnmatch(filename.lower(), '*.m4v'):
                     #print( filename+" is a video file")
                     rename_video_file(filename)
 
