@@ -5,9 +5,14 @@ import sys
 import exifread
 import fnmatch
 import time
+import ffmpeg
+import logging
 
 #用于标识已经处理过的文件，可随意修改
 salt='xxxxxx'
+logfilename='rename'+time.strftime('%Y%m%d%H%M%S')+'.log'
+logging.basicConfig(filename = logfilename, level = logging.INFO, format = '%(asctime)s - %(name)s - %(message)s')
+logger = logging.getLogger()
 
 
 
@@ -34,7 +39,15 @@ def renname_jpg_file(filename):
             cc = cc.replace(':', '_')
         except:
             cc = 'none'
-
+    #image make
+    try:
+        cmake = tags['Image Make']
+        cm = str(cmake)
+        cm = cm.replace(' ', '_')
+        cm = cm.replace(':', '_')
+        cm = cm.replace('/', '_')
+    except:
+        cm = None
     
     #model name
     try:
@@ -48,11 +61,15 @@ def renname_jpg_file(filename):
         mm = 'none'
 
     #filename=org+salt+mm+cc.jpg
-    newname = basename  + "_" + salt + "_" + mm + "_" + cc + extname
+    newname = basename  + "_" + salt + "_" + cm + "_" + mm + "_" + cc + extname
     print(filename ," to ", newname)
+    logger.info("from "+filename+" to "+newname)
+    f.close()
     os.rename(filename, newname)
 
 def rename_video_file(filename):
+    # tags = ffmpeg.probe(filename)["streams"]
+    # ctime = tags[0]['tags']['creation_time']
     ctime = time.localtime(os.path.getmtime(filename))
     createtime = str(ctime.tm_year)+"_"+str(ctime.tm_mon)+"_"+str(ctime.tm_mday)+"_"+str(ctime.tm_hour)+"_"+str(ctime.tm_min)
     #ext name
@@ -64,7 +81,9 @@ def rename_video_file(filename):
     #filename=org+salt+mm+cc.jpg
 
     newname= basename + "_" + salt + "_" + createtime + extname
-    print(filename +" to "+ newname)  
+    print(filename +" to "+ newname)
+    logger.info("from "+filename+" to "+newname)
+
     os.rename(filename, newname)
 
 
